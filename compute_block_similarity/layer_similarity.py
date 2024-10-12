@@ -12,6 +12,8 @@ import datasets
 from utils import get_last_non_padded_tokens, compute_block_distances
 from typing import Optional
 
+import yaml
+
 logging.basicConfig(level=logging.INFO)
 
 # Set seed
@@ -99,6 +101,33 @@ def main(model_path: str, dataset: str, dataset_column: str, batch_size: int, ma
     # Log the layer with the minimum average distance
     logging.info(f"Layer {min_distance_layer} to {min_distance_layer + layers_to_skip} has the minimum average distance of {min_distance}. Consider examining this layer more closely for potential optimization or removal.")
     logging.info("Layer distances written to layer_distances.csv")
+
+    # Create the yaml file to be used by merge-kit
+    data = {
+        'slices': [
+            {
+                'sources': [
+                    {
+                        'model': model_path,
+                        'layer_range': [0, min_distance_layer]
+                    }
+                ]
+            },
+            {
+                'sources': [
+                    {
+                        'model': model_path,
+                        'layer_range': [min_distance_layer+layers_to_skip, model.config.num_hidden_layers]
+                    }
+                ]
+            }
+        ],
+        'merge_method': 'passthrough',
+        'dtype': 'bfloat16'
+    }
+
+    with open('slice.yaml', 'w') as file:
+        yaml.dump(data, file, default_flow_style=False)
 
 
 if __name__ == "__main__":
