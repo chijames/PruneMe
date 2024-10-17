@@ -7,6 +7,5 @@ slices:
       - model: meta-llama/Llama-3.1-8B-Instruct  # Path to Llama 3 Instruct model
         layer_range: [16, 32]
 
-output_path: ./frankenstein
 dtype: bfloat16  # Optional: specify data type for the merged model
-tokenizer_source: meta-llama/Llama-3.1-8B-Instruc
+tokenizer_source: meta-llama/Llama-3.1-8B-Instruct
