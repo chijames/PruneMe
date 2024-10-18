@@ -1,11 +1,11 @@
 merge_method: passthrough  # Use 'passthrough' to specify exact layer slices
 slices:
   - sources:
-      - model: meta-llama/Llama-3.1-8B  # Path to Llama 3 Base model
+      - model: meta-llama/Llama-3.1-8B-Instruct  # Path to Llama 3 Base model
         layer_range: [0, 1]
   - sources:
       - model: meta-llama/Llama-3.1-8B-Instruct  # Path to Llama 3 Instruct model
-        layer_range: [1, 32]
+        layer_range: [8, 32]
 
 dtype: bfloat16  # Optional: specify data type for the merged model
 tokenizer_source: meta-llama/Llama-3.1-8B-Instruct
